@@ -9,11 +9,20 @@ export const authConfig = {
     }),
   ],
   callbacks: {
-    session({ session, user }) {
+    session({ session, user, token }) {
       if (session.user) {
-        session.user.id = user.id;
+        // Para database sessions (OAuth), user vem populado
+        // Para JWT sessions (Credentials), usar token.sub
+        session.user.id = user?.id ?? token?.sub ?? "";
       }
       return session;
+    },
+    jwt({ token, user }) {
+      // Ao fazer login, user está disponível; adicionar id ao token
+      if (user) {
+        token.sub = user.id;
+      }
+      return token;
     },
   },
   pages: {

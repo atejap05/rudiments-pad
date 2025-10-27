@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import bcrypt from "bcryptjs";
 
+export const runtime = "nodejs";
+
 export async function POST(req: Request) {
   try {
     const { name, email, password } = await req.json();
@@ -54,10 +56,28 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ ok: true }, { status: 201 });
-  } catch (err) {
+  } catch (err: any) {
     console.error("/api/auth/signup error:", err);
+    const message =
+      process.env.NODE_ENV === "development" && err?.message
+        ? err.message
+        : "Erro ao criar conta. Tente novamente.";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+export async function GET() {
+  try {
+    const tables = (await prisma.$queryRawUnsafe<any[]>(
+      "SELECT name FROM sqlite_master WHERE type='table'"
+    )) as { name: string }[];
+    return NextResponse.json({
+      databaseUrl: process.env.DATABASE_URL,
+      tables: tables.map(t => t.name).sort(),
+    });
+  } catch (err: any) {
     return NextResponse.json(
-      { error: "Erro ao criar conta. Tente novamente." },
+      { error: err?.message ?? String(err) },
       { status: 500 }
     );
   }

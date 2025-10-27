@@ -3,8 +3,13 @@
 ## Status Atual ✅
 
 - [x] **Fase 1-2**: Projeto configurado, autenticação funcionando, estrutura de dados definida
+  - [x] NextAuth v5 com suporte a Google OAuth e Credentials (email/senha)
+  - [x] Prisma ORM com SQLite (schema de usuários, cursos, módulos, lições)
+  - [x] Campo `password` no modelo User para autenticação local
+  - [x] Hash de senhas com bcryptjs
 - [x] **Fase 3**: Motor de áudio operacional com metrônomo preciso
 - [x] **Fase 4**: UI completa e responsiva (mobile → TV) - **PARCIALMENTE**
+- [x] **Fase 5.1**: Fluxo de cadastro e login com email/senha - **CONCLUÍDO**
 
 ## Próximos Passos - Fase 4 (Continuação)
 
@@ -33,11 +38,13 @@
 
 ## Fase 5: Jornada do Usuário (Onboarding Completo)
 
-### 5.1 Fluxo de Cadastro (PENDENTE)
+### 5.1 Fluxo de Cadastro (✅ CONCLUÍDO)
 
-- [ ] Página `/auth/signup` com formulário estilizado
-- [ ] Validação de email e senha
-- [ ] Redirect para avaliação de nível
+- [x] Página `/auth/signup` com formulário estilizado
+- [x] Validação de email e senha (mínimo 8 caracteres)
+- [x] Autenticação por credenciais (email/senha) com bcrypt
+- [x] Login automático após cadastro
+- [x] Redirect para avaliação de nível (`/onboarding/assessment`)
 
 ### 5.2 Avaliação de Nível (PENDENTE)
 
@@ -60,12 +67,21 @@
 - [ ] Cards visuais para módulos recomendados
 - [ ] Botão "Começar Primeira Aula"
 
-### 5.5 Página de Dashboard (PENDENTE)
+### 5.5 Página de Dashboard (PENDENTE - PRÓXIMA PRIORIDADE)
 
-- [ ] `/dashboard` com progresso geral
+- [ ] `/dashboard` com progresso geral (atualmente retorna 404, mas redirect já funciona)
 - [ ] Últimas aulas praticadas
 - [ ] Módulos recomendados
 - [ ] Estatísticas (tempo total, streak)
+
+## Melhorias de Autenticação (OPCIONAL)
+
+- [ ] **EmailProvider configurado** - Magic link com serviço SMTP real (Resend/SendGrid)
+  - Atualmente desabilitado por padrão (requer `AUTH_EMAIL_ENABLED=true` + `EMAIL_SERVER`)
+- [ ] **Recuperação de senha** - Fluxo de reset via email
+- [ ] **Validação de email** - Enviar código de verificação ao cadastrar
+- [ ] **OAuth adicional** - GitHub, Discord, etc.
+- [ ] **2FA** - Autenticação de dois fatores (opcional)
 
 ## Fase 6: Páginas Principais
 
@@ -152,38 +168,43 @@
 
 ### 🚀 **Sprint 1 (Próxima Semana)**
 
-1. **PracticePlayer.tsx** - Container principal
-2. **Controls.tsx** - Controles básicos (play/pause, BPM)
-3. **RudimentVisualizer.tsx** - Visualização básica do padrão
-4. **Página /practice/[lessonId]** - Integração completa
+1. **Página /dashboard** - Criar página inicial após login (atualmente 404)
+2. **Página /onboarding/assessment** - Avaliação de nível (já configurada no redirect)
+3. **PracticePlayer.tsx** - Container principal
+4. **Controls.tsx** - Controles básicos (play/pause, BPM)
 
 ### 🎯 **Sprint 2 (Semana Seguinte)**
 
-1. **Sidebar.tsx** e **MobileNav.tsx** - Navegação
-2. **Responsividade Mobile First → TV**
-3. **Páginas de cursos e módulos**
-4. **Dashboard básico**
+1. **RudimentVisualizer.tsx** - Visualização básica do padrão
+2. **Página /practice/[lessonId]** - Integração completa
+3. **Sidebar.tsx** e **MobileNav.tsx** - Navegação
+4. **Páginas de cursos e módulos**
 
 ### 📱 **Sprint 3 (Terceira Semana)**
 
-1. **Onboarding completo** (avaliação + tour)
-2. **Página de perfil**
-3. **Otimizações de performance**
-4. **Testes básicos**
+1. **Onboarding completo** (tour guiado + recomendações)
+2. **Responsividade Mobile First → TV**
+3. **Página de perfil**
+4. **Otimizações de performance**
 
-## Notas Técnicas
+---
+
+**Última atualização**: 27 de outubro de 2025  
+**Status**: Fase 5.1 concluída - Autenticação com email/senha funcionando. Próximo: Dashboard e Avaliação de Nível
 
 ### Dependências Pendentes
 
+- [x] ~~`bcryptjs`~~ - Hash de senhas (instalado e funcionando)
 - [ ] `react-joyride` - Para tour guiado
 - [ ] `meyda` - Para análise de áudio avançada
 - [ ] `vexflow` - Para notação musical (futuro)
 
 ### Configurações Pendentes
 
-- [ ] Variáveis de ambiente para Google OAuth
-- [ ] Configuração de email (SendGrid/Resend)
+- [x] ~~Variáveis de ambiente para Google OAuth~~ (configuradas, mas IDs ainda vazios)
+- [ ] Configuração de email (SendGrid/Resend) - para EmailProvider e magic links
 - [ ] Otimizações no `next.config.js`
+- [x] DATABASE_URL apontando para caminho absoluto do SQLite
 
 ### Arquivos de Configuração
 
