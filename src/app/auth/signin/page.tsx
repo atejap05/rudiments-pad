@@ -16,6 +16,9 @@ import { Label } from "@/components/ui/label";
 export default function SignIn() {
   const [providers, setProviders] = useState<any>(null);
   const [email, setEmail] = useState("");
+  const [pwdEmail, setPwdEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -28,6 +31,19 @@ export default function SignIn() {
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     await signIn("email", { email, callbackUrl: "/dashboard" });
+  };
+
+  const handleCredentialsSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    const res = await signIn("credentials", {
+      email: pwdEmail,
+      password,
+      callbackUrl: "/dashboard",
+      redirect: false,
+    });
+    if (res?.error) setError("Email ou senha inválidos.");
+    if (res?.ok) window.location.href = "/dashboard";
   };
 
   return (
@@ -80,21 +96,68 @@ export default function SignIn() {
             </div>
           </div>
 
-          {/* Email Sign In */}
-          <form onSubmit={handleEmailSignIn} className="space-y-4">
+          {/* Email Sign In (magic link) apenas se provider estiver disponível */}
+          {providers?.email && (
+            <form onSubmit={handleEmailSignIn} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                Enviar link de acesso
+              </Button>
+            </form>
+          )}
+
+          <div className="relative py-2">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Ou com email e senha
+              </span>
+            </div>
+          </div>
+
+          {/* Credentials Sign In */}
+          <form onSubmit={handleCredentialsSignIn} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="pwdEmail">Email</Label>
               <Input
-                id="email"
+                id="pwdEmail"
                 type="email"
                 placeholder="seu@email.com"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                value={pwdEmail}
+                onChange={e => setPwdEmail(e.target.value)}
                 required
               />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Senha</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="********"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            {error && (
+              <p className="text-sm text-red-600" role="alert">
+                {error}
+              </p>
+            )}
             <Button type="submit" className="w-full">
-              Enviar link de acesso
+              Entrar
             </Button>
           </form>
 

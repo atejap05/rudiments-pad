@@ -1,68 +1,121 @@
 @import "tailwindcss";
 
 :root {
-  /* Dark theme as default */
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --muted: #262626;
-  --muted-foreground: #a3a3a3;
-  --border: #404040;
-  --input: #404040;
-  --primary: #ffffff;
-  --primary-foreground: #0a0a0a;
-  --secondary: #262626;
-  --secondary-foreground: #ededed;
-  --accent: #262626;
-  --accent-foreground: #ededed;
-  --destructive: #ef4444;
-  --destructive-foreground: #ededed;
-  --ring: #ffffff;
-  --radius: 0.5rem;
+  /* 
+    ==========================================================================
+    DESIGN SYSTEM V1: DARK THEME (DEFAULT)
+    Inspirado em paletas modernas (Vercel, Radix UI).
+    Base: Azul/Cinza escuro e frio.
+    Acentos: Cores vibrantes para interatividade.
+    ==========================================================================
+  */
+
+  /* Base Palette */
+  --background: 222 84% 5%; /* #020817 */
+  --foreground: 210 40% 98%; /* #f8fafc */
+
+  /* Muted Palette (for secondary text, borders, etc.) */
+  --muted: 217 33% 17%;   /* #1e293b */
+  --muted-foreground: 215 20% 65%; /* #94a3b8 */
+
+  /* Cards & Overlays */
+  --card: 222 84% 5%; /* #020817 */
+  --card-foreground: 210 40% 98%; /* #f8fafc */
+  --popover: 222 84% 5%; /* #020817 */
+  --popover-foreground: 210 40% 98%; /* #f8fafc */
+
+  /* Borders & Inputs */
+  --border: 217 33% 17%;   /* #1e293b */
+  --input: 217 33% 17%;   /* #1e293b */
+
+  /* Brand & Primary Actions */
+  --primary: 210 40% 98%; /* #f8fafc */
+  --primary-foreground: 222 47% 11%; /* #111827 */
+
+  /* Secondary Actions */
+  --secondary: 217 33% 17%;   /* #1e293b */
+  --secondary-foreground: 210 40% 98%; /* #f8fafc */
+
+  /* Accent Colors (for highlights, focus, etc.) */
+  --accent: 217 33% 17%;   /* #1e293b */
+  --accent-foreground: 210 40% 98%; /* #f8fafc */
+
+  /* Semantic Colors */
+  --destructive: 0 63% 31%;    /* #b91c1c */
+  --destructive-foreground: 210 40% 98%; /* #f8fafc */
+  --success: 142 76% 36%;   /* #22c55e */
+  --success-foreground: 210 40% 98%; /* #f8fafc */
+  --warning: 38 92% 50%;    /* #f59e0b */
+  --warning-foreground: 210 40% 98%; /* #f8fafc */
+
+  /* Other */
+  --ring: 215 20% 65%; /* #94a3b8 */
+  --radius: 0.75rem;
+
+  /* Gradients & Shadows */
+  --gradient-primary: linear-gradient(to right, var(--primary), var(--accent));
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 @theme {
   --breakpoint-tv: 1920px;
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-ring: var(--ring);
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-ring: hsl(var(--ring));
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --radius: var(--radius);
 }
 
-/* Light theme override */
+/* 
+  ==========================================================================
+  DESIGN SYSTEM V1: LIGHT THEME
+  Base: Branco com toques de cinza claro para profundidade.
+  Acentos: Cores vibrantes da paleta principal para consistência.
+  ==========================================================================
+*/
 [data-theme="light"] {
-  --background: #ffffff;
-  --foreground: #171717;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --border: #e5e5e5;
-  --input: #e5e5e5;
-  --primary: #171717;
-  --primary-foreground: #ffffff;
-  --secondary: #f5f5f5;
-  --secondary-foreground: #171717;
-  --accent: #f5f5f5;
-  --accent-foreground: #171717;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --ring: #171717;
+  --background: 0 0% 100%;  /* #ffffff */
+  --foreground: 222 47% 11%; /* #111827 */
+  --muted: 214 32% 91%;   /* #e5e7eb */
+  --muted-foreground: 215 25% 27%; /* #374151 */
+  --card: 0 0% 100%;  /* #ffffff */
+  --card-foreground: 222 47% 11%; /* #111827 */
+  --popover: 0 0% 100%;  /* #ffffff */
+  --popover-foreground: 222 47% 11%; /* #111827 */
+  --border: 214 32% 91%;   /* #e5e7eb */
+  --input: 214 32% 91%;   /* #e5e7eb */
+  --primary: 222 47% 11%; /* #111827 */
+  --primary-foreground: 210 40% 98%; /* #f8fafc */
+  --secondary: 214 32% 91%;   /* #e5e7eb */
+  --secondary-foreground: 222 47% 11%; /* #111827 */
+  --accent: 214 32% 91%;   /* #e5e7eb */
+  --accent-foreground: 222 47% 11%; /* #111827 */
+  --destructive: 0 72% 51%;    /* #ef4444 */
+  --destructive-foreground: 210 40% 98%; /* #f8fafc */
+  --success: 142 71% 45%;   /* #16a34a */
+  --success-foreground: 210 40% 98%; /* #f8fafc */
+  --warning: 38 92% 50%;    /* #f59e0b */
+  --warning-foreground: 222 47% 11%; /* #111827 */
+  --ring: 215 28% 17%; /* #1f2937 */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
 }

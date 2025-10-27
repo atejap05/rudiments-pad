@@ -1,48 +1,34 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
 import { Switch } from "@/components/ui/switch";
 
 export function ThemeToggle() {
-  const [isDark, setIsDark] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const { setTheme, theme } = useTheme();
 
+  // useEffect only runs on the client, so we can safely show the UI
   useEffect(() => {
-    // Check if we're in the browser
-    if (typeof window !== "undefined") {
-      const savedTheme = localStorage.getItem("theme");
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-
-      if (savedTheme) {
-        setIsDark(savedTheme === "dark");
-        document.documentElement.setAttribute("data-theme", savedTheme);
-      } else {
-        setIsDark(prefersDark);
-        document.documentElement.setAttribute(
-          "data-theme",
-          prefersDark ? "dark" : "light"
-        );
-      }
-    }
+    setMounted(true);
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = isDark ? "light" : "dark";
-    setIsDark(!isDark);
+  if (!mounted) {
+    // Render a placeholder or null on the server to avoid mismatch
+    return <div className="h-6 w-20 animate-pulse rounded-full bg-muted" />;
+  }
 
-    if (typeof window !== "undefined") {
-      localStorage.setItem("theme", newTheme);
-      document.documentElement.setAttribute("data-theme", newTheme);
-    }
+  const isDark = theme === "dark";
+
+  const toggleTheme = (checked: boolean) => {
+    setTheme(checked ? "dark" : "light");
   };
 
   return (
     <div className="flex items-center space-x-2">
-      <span className="text-sm">🌙</span>
-      <Switch checked={isDark} onCheckedChange={toggleTheme} />
       <span className="text-sm">☀️</span>
+      <Switch checked={isDark} onCheckedChange={toggleTheme} aria-label="Toggle theme" />
+      <span className="text-sm">🌙</span>
     </div>
   );
 }

@@ -17,6 +17,10 @@ export default function SignUp() {
   const [providers, setProviders] = useState<any>(null);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -28,7 +32,38 @@ export default function SignUp() {
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    await signIn("email", { email, callbackUrl: "/onboarding/assessment" });
+    setError(null);
+    if (password !== confirm) {
+      setError("As senhas não conferem.");
+      return;
+    }
+    if (password.length < 8) {
+      setError("A senha deve ter pelo menos 8 caracteres.");
+      return;
+    }
+    try {
+      setLoading(true);
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data?.error ?? "Não foi possível criar a conta.");
+        return;
+      }
+      // Login automático via credenciais
+      await signIn("credentials", {
+        email,
+        password,
+        callbackUrl: "/onboarding/assessment",
+      });
+    } catch (err) {
+      setError("Erro inesperado. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -107,8 +142,35 @@ export default function SignUp() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full">
-              Criar conta
+            <div className="space-y-2">
+              <Label htmlFor="password">Senha</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="********"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirm">Confirmar senha</Label>
+              <Input
+                id="confirm"
+                type="password"
+                placeholder="********"
+                value={confirm}
+                onChange={e => setConfirm(e.target.value)}
+                required
+              />
+            </div>
+            {error && (
+              <p className="text-sm text-red-600" role="alert">
+                {error}
+              </p>
+            )}
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Criando..." : "Criar conta"}
             </Button>
           </form>
 

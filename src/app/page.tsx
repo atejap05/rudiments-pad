@@ -15,7 +15,11 @@ export default function Home() {
 
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
-        <section className="text-center py-16 md:py-24">
+        <section className="relative text-center py-16 md:py-24">
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 top-0 -z-10 h-full w-full bg-background bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,hsl(var(--primary)/0.1),rgba(255,255,255,0))]"
+          />
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             🥁 Rudiment Pad
           </h1>
